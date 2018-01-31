@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <!-- TÍTULO -->
+        <title>Tutorial PHP : PHP y Oracle</title>
+
+        <!-- CANONICAL -->
+        <link rel="canonical" href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/bases-de-datos-oracle_002.html">
+
+        <!-- META -->
+        <meta name="keywords" content="oracle, conectar, base de datos, tabla, registros, consulta, oci_connect, oci_parse, oci_execute, oci_free_statement, oci_fetch_object, oci_num_rows, funciones de oracle, exception, sql, sentencia sql">
+        <meta name="description" content="Curso tutorial de PHP: cómo crear una página web con PHP y bases de datos Oracle">
+
+                <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <meta name="robots" content="all">
+
+        <script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ca-pub-7727315925763685.js"></script><script type="text/javascript" async="" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ga.js"></script><script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/jquery_002.js"></script>
+
+        <script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/lib.js"></script>
+        <script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/bootstrap.js"></script>
+        <link href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/bootstrap.css" rel="stylesheet">
+        <link rel="styleSheet" href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/estilos.css">
+		<link href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/css.css" rel="stylesheet">
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <link rel="Shortcut Icon" href="https://informaticapc.com/base_images/favicon.ico" type="image/x-icon">
+
+        <link rel="author" href="https://plus.google.com/102758072266058874829">
+        <link rel="publisher" href="https://plus.google.com/106945824829337795179">
+
+        <script>
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-4272142-12']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+         <!-- JQUERY SYNTAX HIGHLIGHTER -->
+        <link rel="stylesheet" type="text/css" href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/jquery.css">
+        <script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/jquery.js"></script>
+        <script src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/cursos-programacion-php.js"></script>
+
+    <link rel="preload" href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/integrator_002.js" as="script"><script type="text/javascript" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/integrator_002.js"></script><link rel="preload" href="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/integrator.js" as="script"><script type="text/javascript" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/integrator.js"></script></head>
+
+
+    <body>
+
+        <!-- CONTENEDOR PRINCIPAL -->
+	<div class="container">
+
+            <a name="inicio"></a>
+
+            <!-- ENCABEZADO -->
+
+            <header>
+
+                <div class="row">
+                    <div class="col-xs-12 logo-imagen">
+                        <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/logo-g.jpg" class="img-responsive" alt="informaticaPC">
+                    </div>
+                </div>
+
+                <!-- MENÚ (nav) -->
+                <div class="row fila-menu">
+                    <div class="col-xs-12 col-menu">
+                        
+					<nav class="navbar navbar-default">
+
+                      <div class="container-fluid">
+                        <div class="navbar-header">
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Cambiar navegación</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                          </button>
+                          <a class="navbar-brand" href="https://informaticapc.com/"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/home.png" id="img-home" alt="Inicio"></a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav">
+                            <!-- Windows -->
+							<li><a href="https://informaticapc.com/blog/">Blog</a></li>
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Windows<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/microsoft-windows-7/">Windows 7</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-windows-vista/">Windows Vista</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-windows-xp/">Windows XP</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- Office 2010 -->
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Office 2010<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/microsoft-word-2010/">Word 2010</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-excel-2010/">Excel 2010</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-access-2010/">Access 2010</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-powerpoint-2010/">Powerpoint 2010</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- Office 2003 -->
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Office 2003<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/microsoft-word-2003/">Word 2003</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-excel-2003/">Excel 2003</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-access-2003/">Access 2003</a></li>
+                                <li><a href="https://informaticapc.com/microsoft-powerpoint-2003/">Powerpoint 2003</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- OpenOffice -->
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">OpenOffice<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/openoffice-writer/">OpenOffice Writer</a></li>
+                                <li><a href="https://informaticapc.com/openoffice-calc/">OpenOffice Calc</a></li>
+                                <li><a href="https://informaticapc.com/openoffice-base/">OpenOffice Base</a></li>
+                                <li><a href="https://informaticapc.com/openoffice-impress/">OpenOffice Impress</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- Programación -->
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Programación<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/teoria-de-la-programacion/">Teoría de la programación</a></li>
+                                <li><a href="https://informaticapc.com/poo/">Programación orientada a objetos (POO)</a></li>
+                                <li><a href="https://informaticapc.com/patrones-de-diseno/">Patrones de Diseño Software</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- Programación Web-->
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Programación Web<span class="caret"></span></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://informaticapc.com/tutorial-html/">Tutorial HTML</a></li>
+                                <li><a href="https://informaticapc.com/tutorial-css/">Tutorial CSS</a></li>
+                                <li><a href="https://informaticapc.com/tutorial-javascript/">Tutorial JavaScript</a></li>
+                                <li><a href="https://informaticapc.com/curso-de-jquery/">Tutorial JQuery</a></li>
+                                <li><a href="https://informaticapc.com/tutorial-php/">Tutorial PHP</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://informaticapc.com/guias-instalacion-programas/instalar-apache-php-y-mysql.php">Instalar y configurar Apache, PHP y MySQL</a></li>
+                                <li><a href="https://informaticapc.com/guias-instalacion-programas/xampp-apache-php-mysql.php">Instalación de XAMPP</a></li>
+                                <li><a href="https://informaticapc.com/tutoriales/dominios-gratis.php">Registrar dominios gratis .tk</a></li>
+                                <li><a href="https://informaticapc.com/tutoriales/alojamiento-web-gratis-con-000webhost.php">Contratar alojamiento web gratis</a></li>
+                              </ul>
+                            </li>
+
+                          </ul>
+                        </div><!-- /.navbar-collapse -->
+                      </div><!-- /.container-fluid -->
+
+					</nav>
+                    </div>
+                </div>
+
+        </header>
+
+
+
+	<!-- CONTENIDO -->
+
+	<div class="row equal">
+
+
+                <!-- COLUMNA DE LA IZQUIERDA -->
+
+                <div class="colprincipal col-xs-12 col-sm-4 col-md-3 hidden-xs" id="colI">
+
+                    <div class="bl-encabezado">
+                        <span class="encabCurso">TUTORIAL PHP</span>
+                    </div>
+
+                    <!-- MENÚ IZQUIERDA (nav) -->
+                    
+                                                        <div class="hg centrado">
+                                                            <a href="https://informaticapc.com/blog/alojamiento-web-para-tu-blog-o-tienda-online-esto-te-interesa/"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/wordpress_200x200_pruebagratis.gif" alt="hosting wordpress seguro" title="Hosting 100% Wordpress" border="0" width="200" height="200"></a>
+                                                        </div>
+
+							<nav class="bl-menu">
+
+					                    <ol class="lMenu">
+
+                                                                <li><span>INTRODUCCIÓN A PHP</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php">El lenguaje PHP</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php#xampp">¿Qué necesito?</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php#incluir">Incluir código PHP en una página web</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php#mostrar">Mostrar texto</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php#comentarios">Comentarios</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/index.php#operadores">Operadores</a></li>
+
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php">Control de Excepciones</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php#funciones">Crear una función en PHP</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php#incluir">Incluir código de otro archivo</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php#redirigir">Redirigir a otra página</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php#cabeceras">Enviar encabezados</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php#exit">Detener un script y controlar la salida</a></li>
+                                                                    </ol>
+
+                                                                 </li>
+
+                                                                <li><span>TIPOS DE DATOS, VARIABLES, CONSTANTES Y ARRAYS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/tipos-de-datos-variables-constantes.php">Tipos de datos</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/tipos-de-datos-variables-constantes.php#cvar">Variables en PHP</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/tipos-de-datos-variables-constantes.php#existe">Comprobar si existe una variable</a></li>
+
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/averiguar-y-convertir-tipo-de-dato.php">Averiguar tipo de dato de una variable</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/averiguar-y-convertir-tipo-de-dato.php#convertir">Cambiar el tipo de datos de una variable</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/averiguar-y-convertir-tipo-de-dato.php#referencia">Pasar variables por referencia</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/averiguar-y-convertir-tipo-de-dato.php#constantes">Constantes en PHP</a></li>
+
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/arrays.php">Crear un array en PHP</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/arrays.php#asociativos">Array asociativos</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/arrays.php#info">Información y contenido de variables y arrays</a></li>
+
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>SENTENCIAS DE CONTROL</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/sentencias-de-control-condicionales.php">Estructuras o sentencias de control</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/sentencias-de-control-condicionales.php">Estructuras de control Condicionales o Selectivas</a></li>
+
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/sentencias-de-control-repetitivas.php">Estructuras de control Repetitivas</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE ARRAYS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/buscar-recorrer-array.php">Obtener el número de elementos de un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/buscar-recorrer-array.php#recorrer">Recorrer un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/buscar-recorrer-array.php#buscar">Buscar datos en un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/buscar-recorrer-array.php#insertar">Insertar elementos</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/buscar-recorrer-array.php#eliminar">Borrar elementos en un array</a></li>
+
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php">Ordenar un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#reverse">Invertir el orden de los elementos</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#ak">Obtener las claves de un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#ake">Comprobar si existe una clave en un array asociativo</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#merge">Combinar los elementos de varios arrays</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#slice">Extraer parte de un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#diff">Comprobar diferencia entre arrays</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#acad">Crear una cadena de texto a partir de un array</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/ordenar-invertir-array.php#cadarr">Crear un array a partir de una cadena</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE CADENAS (I)</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php">Cadenas de texto en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php#mm">Convertir mayúsculas y minúsculas</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php#longitud">Obtener la longitud de una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php#concatenar">Concatenar o unir cadenas</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php#convertir">Convertir a cadena de caracteres</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cadenas-de-caracteres.php#buscar">Buscar una cadena dentro de otra</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/extraer-reemplazar-caracteres.php">Reemplazar parte de una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/extraer-reemplazar-caracteres.php#extraer">Extraer parte de una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/extraer-reemplazar-caracteres.php#especiales">Secuencias de escape</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/extraer-reemplazar-caracteres.php#escapar">Escapar caracteres en una cadena de texto</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE CADENAS (II)</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php">Limpiar código HTML</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#convertir">Convertir entidades HTML en caracteres HTML</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#saltos">Convertir saltos de línea</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#creacad">Crear una cadena de texto a partir de un array</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#crearr">Crear un array a partir de una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#espacios">Eliminar espacios a principio y final de una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/limpiar-texto-html.php#contar">Contar el número de palabras</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/repetir-invertir-cadena.php">Repetir caracteres</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/repetir-invertir-cadena.php#rellenar">Rellenar una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/repetir-invertir-cadena.php#invertir">Invertir una cadena</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/repetir-invertir-cadena.php#wordwrap">Definir el número de caracteres por línea</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/repetir-invertir-cadena.php#encriptar">Encriptar cadenas de texto</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE CADENAS (III)</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php">Expresiones regulares en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php#bcpre">Buscar texto con expresiones regulares - PCRE</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php#bposix">Buscar texto con expresiones regulares - POSIX</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php#veces">Número veces que aparece una cadena dentro de otra (PCRE)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php#ejemplos1">Ejemplos de búsquedas con expresiones regulares PCRE y POSIX (I)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-buscar.php#ejemplos2">Ejemplos de búsquedas con expresiones regulares PCRE y POSIX (II)</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-reemplazar.php">Reemplazar texto usando expresiones regulares (PCRE)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-reemplazar.php#rposix">Reemplazar texto usando expresiones regulares (POSIX)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-reemplazar.php#ejere1">Ejemplo: eliminar espacios a principio y fin (PCRE)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-reemplazar.php#ejere2">Ejemplo: eliminar espacios a principio y fin (POSIX)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/expresiones-regulares-reemplazar.php#utiles">Expresiones regulares útiles (PCRE)</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE NÚMEROS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/numeros-y-matematicas.php">Comprobar si un valor es numérico</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/numeros-y-matematicas.php#convertir">Convertir a número</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/numeros-y-matematicas.php#redondear">Redondear números</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/numeros-y-matematicas.php#formato">Dar formato a un número</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/numeros-y-matematicas.php#math">Funciones matemáticas</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>TRATAMIENTO DE FECHAS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/fechas.php">Obtener fecha y hora</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/fechas.php#utcgmt">Hora universal UTC o GMT</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/fechas.php#comprobar">Comprobar si una fecha es válida</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/fechas.php#sumrest">Sumar y restar fechas</a></li>
+                                                                         <li><a href="https://informaticapc.com/tutorial-php/fechas.php#diferencia">Diferencia entre dos fechas</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>FORMULARIOS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/formularios.php">Formularios en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/formularios.php">Consideraciones sobre la validación de formularios</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/formularios.php#acceder">Acceder a los datos de un formulario</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/formularios.php#campos">Comprobar los campos requeridos</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/validar-formulario.php">Validar en PHP los datos recibidos de un formulario</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>COOKIES EN PHP</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cookies.php">Crear Cookies en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cookies.php#comprobar">Comprobar si existe una Cookie</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cookies.php#activas">Comprobar si están activadas las Cookies</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cookies.php#leer">Obtener el valor de una Cookie</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/cookies.php#eliminar">Eliminar una Cookie</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>SESIONES EN PHP</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/variables-de-sesion.php">Sesiones y variables de sesión en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/variables-de-sesion.php#iniciar">Iniciar y eliminar una sesión</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/variables-de-sesion.php#cvar">Crear y eliminar variables y arrays de sesión</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/variables-de-sesion.php#ejemplo">Ejemplo de sesiones en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/variables-de-sesion.php#objetos">Propagar objetos en una sesión</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>ARCHIVOS Y DIRECTORIOS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php">Archivos y carpetas en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php">Comprobar si existe un archivo o directorio</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php#info">Información sobre un archivo</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php#crear">Crear, abrir y cerrar archivos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php#desplazar">Desplazamiento dentro de un archivo</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/crear-archivos.php#insertar">Insertar texto en un archivo</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/archivos-csv-texto-delimitado.php">Leer y Recorrer archivos de texto</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/archivos-csv-texto-delimitado.php#delimit">Archivos de texto delimitado</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php">Borrar líneas en un archivo de texto</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#enviar">Leer un archivo y enviarlo al navegador web</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#copiar">Copiar, renombrar, mover y eliminar archivos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#upload">Subir archivos al servidor (upload de archivos)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#comprimir">Comprimir y descomprimir archivos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#creardir">Crear, renombrar, eliminar y cambiar de directorio</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#listardir">Listar contenido de directorios</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/manejo-de-archivos.php#otrasdir">Otras funciones útiles sobre directorios</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>PHP Y CORREO ELECTRÓNICO</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/enviar-email-correo-electronico.php">Envío de correo electrónico en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/enviar-email-correo-electronico.php">Enviar EMail como texto plano</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/enviar-email-correo-electronico.php#html">Enviar EMail en formato HTML</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/enviar-email-correo-electronico.php#adjuntos1">Enviar archivos adjuntos por EMail</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/enviar-email-correo-electronico.php#phpmailer">Enviar un EMail usando PHPMailer</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>CLASES Y OBJETOS EN PHP</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/clases-objetos-herencia.php">Programación Orientada a Objetos en PHP</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/clases-objetos-herencia.php#crear">Crear Clases y Objetos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/clases-objetos-herencia.php#herencia">Herencia</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/clases-objetos-herencia.php#interface">Interfaces</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/interfaces-clases-abstractas-serializar.php">Acceder a miembros de Clases y Objetos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/interfaces-clases-abstractas-serializar.php#abstract">Crear una clase abstracta</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/interfaces-clases-abstractas-serializar.php#serializar">Serializar Objetos en PHP</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/metodos-magicos.php">Métodos mágicos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/metodos-magicos.php#recorrer">Recorrer propiedades y métodos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/metodos-magicos.php#dinamicos">Crear un Objeto dinámicamente</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/metodos-magicos.php#funciones">Funciones de Clases y Objetos</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>PHP Y BASES DE DATOS</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-mysql.php">PHP y MySQL</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-mysql.php#conectm">Excepciones en conexión y consultas a MySQL</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-postgresql.php">PHP y PostgreSQL</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-postgresql.php#conectm">Excepciones en conexión y consultas a PostgreSQL</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-postgresql.php#fechabd">Convertir fecha para almacenarla en MySQL y PostgreSQL</a></li>
+
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-oracle.php">PHP y Oracle</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/bases-de-datos-oracle.php#conectm">Excepciones en conexión y consultas a Oracle</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                                <li><span>CONFIGURAR PHP</span>
+
+                                                                    <ol class="lMenuI">
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php">El archivo de configuración</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#modif">Modificar configuración en tiempo de ejecución</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#extens">Extensiones cargadas</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#ini">Cargar un archivo de configuración personalizado</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#msg">Mostrar y ocultar mensajes de error</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#zona">Configuración regional</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#sesiones">Configurar sesiones</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#upload">Configuración para subir archivos al servidor (upload)</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#mail">Configurar envío de E-Mail</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#bbdd">Acceso a Bases de Datos</a></li>
+                                                                        <li><a href="https://informaticapc.com/tutorial-php/configurar.php#includes">Definir ruta para localizar archivos</a></li>
+                                                                    </ol>
+
+                                                                </li>
+
+                                                             </ol>
+
+							</nav>
+
+                </div>  <!-- CIERRE COLUMNA IZQUIERDA -->
+
+
+
+		<!-- COLUMNA DERECHA -->
+
+                <div class="colprincipal col-xs-12 col-sm-8 col-md-9" id="colD">
+
+
+                    <!-- ENCABEZADO COLUMNA DERECHA -->
+
+                    <div class="row" id="fEncab">
+
+                        <div class="col-xs-12 col-md-7 ">
+                            <h1>Tutorial de PHP</h1>
+                            <p>PHP y Oracle</p>
+                            <hr>
+			    <div class="dComparte">
+                        <div class="dCanalesP">
+                            <a href="https://feeds.feedburner.com/informaticapc-com" target="_blank" id="imgRSS"></a>
+                            <a href="https://www.youtube.com/user/AprInformatica/" target="_blank" id="imgYTB"></a>
+                            <a href="https://twitter.com/ApInf" target="_blank" id="imgTW"></a>
+                            <a href="https://www.facebook.com/pages/AprenderInformatica/124212020947403" target="_blank" id="imgFB"></a>
+                            <a href="https://plus.google.com/+Informaticapc/posts" target="_blank" id="imgGP"></a>
+                        </div></div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-5" id="fEncabS">
+
+                            <!-- BLOQUE - REGISTRO -->
+                            <div class="row bl-rojo">
+
+                                <div class="row bl-encabezado">
+                                    <div class="col-xs-12">
+                                        <span>Regístrate</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-xs-12">
+
+                                       <div id="div-form-reg">
+
+                                            <form enctype="application/x-www-form-urlencoded" action="https://informaticapc.ip-zone.com/ccm/subscribe/index/form/" onsubmit="window.open('https://informaticapc.ip-zone.com/ccm/subscribe/index/form/', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true" method="post" target="popupwindow">
+                                                <input name="groups[]" id="groups-45" value="45" type="hidden">
+                                                <input name="name" id="name" value="IPC-WEB" type="hidden">
+                                                <input name="email" id="emailSuscripcionWeb" value="Introduce tu E-Mail..." type="text">
+                                                <button type="submit" id="enviarSuscripcionWeb" class="btn btn-warning btn-xs">Enviar &gt;&gt;</button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xs-12" id="registro">
+                                        <p class="text-center"><small>Tus datos no serán compartidos, solo nosotros te enviaremos información y novedades</small></p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- BOTONERA -->
+
+                    <nav class="row botonera">
+                        <div class="col-xs-12">
+                            <a href="https://informaticapc.com/tutorial-php/index.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-primero.gif" alt="Primera página"></a>
+                            <a href="https://informaticapc.com/tutorial-php/bases-de-datos-postgresql.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-anterior.gif" alt="Anterior"></a>
+                            <a href="https://informaticapc.com/tutorial-php/configurar.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-siguiente.gif" alt="Siguiente"></a>
+                            <a href="https://informaticapc.com/tutorial-php/configurar.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-ultimo.gif" alt="Última página"></a>
+                        </div>
+                    </nav>
+
+
+		<article>
+
+                    <!-- APARTADO -->
+
+                    <section>
+
+                            <div class="row fAptdo">
+                                <div class="col-xs-12">
+                                    <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/pc1.png" alt="">
+                                    <a name="oracle"></a>
+                                    <h2>PHP y Oracle</h2>
+                                </div>
+                            </div>
+
+                            <p>A continuación vamos a mostrarte un sencillo ejemplo de cómo trabajar con <strong>bases de datos Oracle</strong>, para ello en la base de datos <span class="negcur">test</span> de Oracle crea la siguiente <strong>tabla</strong> que utilizaremos en el ejemplo:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_1" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_tabla" class="sh_sql snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_keyword">create</span> <span class="sh_keyword">table</span> tbl_personas <span class="sh_symbol">(</span></li><li>    id     integer <span class="sh_keyword">not</span> <span class="sh_keyword">null</span> <span class="sh_keyword">check</span> <span class="sh_symbol">(</span>id <span class="sh_symbol">&gt;</span> <span class="sh_number">0</span><span class="sh_symbol">),</span></li><li>    nombre <span class="sh_type">varchar</span><span class="sh_symbol">(</span><span class="sh_number">50</span><span class="sh_symbol">)</span> <span class="sh_keyword">not</span> <span class="sh_keyword">null</span><span class="sh_symbol">,</span></li><li>    <span class="sh_keyword">primary</span> <span class="sh_keyword">key</span> <span class="sh_symbol">(</span>id<span class="sh_symbol">)</span></li><li><span class="sh_symbol">)</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">create table tbl_personas (
+    id     integer not null check (id &gt; 0),
+    nombre varchar(50) not null,
+    primary key (id)
+)
+</pre></div></div></code>
+
+                            <p><span class="negsub">NOTA</span>: a día de hoy, la última versión de Oracle disponible (Oracle 10g) no soporta <span class="rMenu">unsigned</span>, en su lugar podemos usar la cláusula <span class="rMenu">check</span>.</p>
+
+                            <!-- ADS -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="adCurso">
+	<script async="" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/adsbygoogle.js"></script>
+	<!-- Curso_Adaptable -->
+	<ins class="adsbygoogle adslot_curso" style="display: block; height: 280px;" data-ad-client="ca-pub-7727315925763685" data-ad-slot="4730660048" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:350px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:350px;background-color:transparent;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:350px;height:280px;" width="350" height="280" frameborder="0"></iframe></ins></ins></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div>                                </div>
+                            </div>
+
+                            <p>A continuación creamos una función para realizar la <strong>conexión</strong> utilizando la funciones de PHP <span class="rMenu">oci_connect()</span> para <strong>conectar con Oracle</strong> y seleccionar la base de datos, y <span class="rMenu">oci_error()</span> que nos devolverá un mensaje de error si se produjo alguno (lo detectamos usando <span class="rMenu">or die</span>, que detendrá la ejecución):</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_2" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_2" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_conectar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">conectar_Oracle</span><span class="sh_symbol">(</span> <span class="sh_variable">$usuario</span><span class="sh_symbol">,</span> <span class="sh_variable">$pass</span><span class="sh_symbol">,</span> <span class="sh_variable">$cadenaConexion</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_comment">// Conectar con Oracle:</span></li><li class="box"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$conexion</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_connect</span><span class="sh_symbol">(</span><span class="sh_variable">$usuario</span><span class="sh_symbol">,</span> <span class="sh_variable">$pass</span><span class="sh_symbol">,</span> <span class="sh_variable">$cadenaConexion</span><span class="sh_symbol">)</span> <span class="sh_keyword">or</span> <span class="sh_keyword">die</span> <span class="sh_symbol">(</span> <span class="sh_string">"Error al conectar : "</span><span class="sh_symbol">.</span><span class="sh_function">oci_error</span><span class="sh_symbol">()</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function conectar_Oracle( $usuario, $pass, $cadenaConexion )
+    {
+        // Conectar con Oracle:
+        $conexion = oci_connect($usuario, $pass, $cadenaConexion) or die ( "Error al conectar : ".oci_error() );
+
+        return $conexion;
+    }
+?&gt;
+</pre></div></div></code>
+
+                            <p>Creamos otra función que utilizaremos 
+tanto para borrar todos los registros de la tabla o bien sólo uno 
+especificado. Para procesar una consulta (tanto de selección como de 
+actualización) usaremos las funciones <span class="rMenu">oci_parse()</span> (para <strong>preparar la consulta</strong>) y <span class="rMenu">oci_execute()</span> (para <span class="negrita">procesar la consulta</span>). También es recomendable usar <span class="rMenu">oci_free_statement()</span> para <span class="negrita">liberar los recursos</span> de una sentencia o cursor:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_3" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_3" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=3&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_borrar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">borrarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$id</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$sql</span> <span class="sh_symbol">=</span> <span class="sh_string">"DELETE FROM tbl_personas"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_comment">// Si 'id' es diferente de 'null' sólo se borra la persona con el 'id' especificado:</span></li><li>        <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$id</span> <span class="sh_symbol">!=</span> null <span class="sh_symbol">)</span></li><li>            <span class="sh_variable">$sql</span> <span class="sh_symbol">.=</span> <span class="sh_string">" WHERE id="</span><span class="sh_symbol">.</span><span class="sh_variable">$id</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_parse</span><span class="sh_symbol">(</span><span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span><span class="sh_symbol">);</span> <span class="sh_comment">// Preparar la sentencia</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="sh_comment">// Ejecutar la sentencia</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>        <span class="sh_function">oci_free_statement</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="sh_comment">// Liberar los recursos asociados a una sentencia o cursor</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$ok</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function borrarPersona( $conexion, $id )
+    {
+        $sql = "DELETE FROM tbl_personas";
+
+        // Si 'id' es diferente de 'null' sólo se borra la persona con el 'id' especificado:
+        if( $id != null )
+            $sql .= " WHERE id=".$id;
+
+        $stmt = oci_parse($conexion, $sql); // Preparar la sentencia
+        $ok = oci_execute( $stmt );		 // Ejecutar la sentencia
+        oci_free_statement($stmt);		  // Liberar los recursos asociados a una sentencia o cursor
+
+        return $ok;
+    }
+?&gt;
+</pre></div></div></code>
+
+                            <p>Después creamos otra función para <span class="negrita">insertar un registro</span>:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_4" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_4" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=4&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_insertar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">insertarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$id</span><span class="sh_symbol">,</span> <span class="sh_variable">$nombre</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$sql</span> <span class="sh_symbol">=</span> <span class="sh_string">"INSERT INTO tbl_personas VALUES ("</span><span class="sh_symbol">.</span><span class="sh_variable">$id</span><span class="sh_symbol">.</span><span class="sh_string">", '"</span><span class="sh_symbol">.</span><span class="sh_variable">$nombre</span><span class="sh_symbol">.</span><span class="sh_string">"')"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_parse</span><span class="sh_symbol">(</span><span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;  <span class="sh_comment">// Preparar la sentencia</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$ok</span>   <span class="sh_symbol">=</span> <span class="sh_function">oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Ejecutar la sentencia</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>        <span class="sh_function">oci_free_statement</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <span class="sh_comment">// Liberar los recursos asociados a una sentencia o cursor</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$ok</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function insertarPersona( $conexion, $id, $nombre )
+    {
+        $sql = "INSERT INTO tbl_personas VALUES (".$id.", '".$nombre."')";
+
+        $stmt = oci_parse($conexion, $sql);	  // Preparar la sentencia
+        $ok   = oci_execute( $stmt );			// Ejecutar la sentencia
+        oci_free_statement($stmt);			   // Liberar los recursos asociados a una sentencia o cursor
+
+        return $ok;
+    }
+?&gt;
+</pre></div></div></code>
+
+                            <p>Creamos una nueva función para <span class="negrita">modificar un registro</span>:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_5" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_5" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=5&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_modificar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">modificarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$id</span><span class="sh_symbol">,</span> <span class="sh_variable">$nombre</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$sql</span> <span class="sh_symbol">=</span> <span class="sh_string">"UPDATE tbl_personas SET nombre='"</span><span class="sh_symbol">.</span><span class="sh_variable">$nombre</span><span class="sh_symbol">.</span><span class="sh_string">"' WHERE id="</span><span class="sh_symbol">.</span><span class="sh_variable">$id</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_parse</span><span class="sh_symbol">(</span><span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;  <span class="sh_comment">// Preparar la sentencia</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$ok</span>   <span class="sh_symbol">=</span> <span class="sh_function">oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Ejecutar la sentencia</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>        <span class="sh_function">oci_free_statement</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <span class="sh_comment">// Liberar los recursos asociados a una sentencia o cursor</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$ok</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function modificarPersona( $conexion, $id, $nombre )
+    {
+        $sql = "UPDATE tbl_personas SET nombre='".$nombre."' WHERE id=".$id;
+
+        $stmt = oci_parse($conexion, $sql);	  // Preparar la sentencia
+        $ok   = oci_execute( $stmt );			// Ejecutar la sentencia
+        oci_free_statement($stmt);			   // Liberar los recursos asociados a una sentencia o cursor
+
+        return $ok;
+    }
+?&gt;
+</pre></div></div></code>
+
+                            <p>La siguiente función nos permite <span class="negrita">listar la tabla completa</span>. Utilizamos las funciones de PHP <span class="rMenu">oci_fetch_object()</span> (devuelve los valores de los <strong>campos</strong> en un Objeto de PHP, debiéndose escribir los nombres de los campos en mayúsculas) y <span class="rMenu">oci_num_rows()</span> (devuelve el número de registros encontrados, aunque sólo después de haber usado alguna de las funciones <span class="rMenu">oci_fetch_*</span>.):</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_6" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_6" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=6&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_listar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">listarPersonas</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$sql</span> <span class="sh_symbol">=</span> <span class="sh_string">"SELECT * FROM tbl_personas ORDER BY id"</span><span class="sh_symbol">;</span></li><li>        <span class="sh_variable">$filas</span> <span class="sh_symbol">=</span> <span class="sh_number">0</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_parse</span><span class="sh_symbol">(</span><span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Preparar la sentencia</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$ok</span>   <span class="sh_symbol">=</span> <span class="sh_function">oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="sh_comment">// Ejecutar la sentencia</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> true <span class="sh_symbol">)</span></li><li>        <span class="sh_cbracket">{</span></li><li>            <span class="sh_comment">/* Mostrar los datos. Lo hacemos de este modo puesto que no es posible obtener el número de</span></li><li><span class="sh_comment">               registros sin antes haber accedido a los datos mediante las funciones 'oci_fetch_*'):</span></li><li><span class="sh_comment">            */</span></li><li class="box"><span class="box-sp">&nbsp;</span>            <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$obj</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_fetch_object</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">)</span> <span class="sh_symbol">)</span></li><li>            <span class="sh_cbracket">{</span></li><li>                <span class="sh_keyword">echo</span> <span class="sh_string">"&lt;p/&gt;LISTADO DE PERSONAS&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li>                <span class="sh_keyword">echo</span> <span class="sh_string">"===================&lt;p /&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>                <span class="sh_comment">// Recorrer el resource y mostrar los datos (HAY QUE PONER LOS NOMBRES DE LOS CAMPOS EN MAYÚSCULAS):</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>                <span class="sh_keyword">do</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                <span class="sh_cbracket">{</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                    <span class="sh_keyword">echo</span> <span class="sh_variable">$obj</span><span class="sh_symbol">-&gt;</span>ID<span class="sh_symbol">.</span><span class="sh_string">" - "</span><span class="sh_symbol">.</span><span class="sh_variable">$obj</span><span class="sh_symbol">-&gt;</span>NOMBRE<span class="sh_symbol">.</span><span class="sh_string">"&lt;br /&gt;"</span><span class="sh_symbol">;</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>                <span class="sh_cbracket">}</span> <span class="sh_keyword">while</span><span class="sh_symbol">(</span> <span class="sh_variable">$obj</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_fetch_object</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">)</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>                <span class="sh_comment">// Mostrar el número de registros:</span></li><li class="box"><span class="box-sp">&nbsp;</span>                <span class="sh_keyword">echo</span> <span class="sh_string">"&lt;p&gt;("</span><span class="sh_symbol">.</span><span class="sh_function">oci_num_rows</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">).</span><span class="sh_string">") fila(s) encontrado(s)&lt;/p&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>            <span class="sh_cbracket">}</span></li><li>            <span class="sh_keyword">else</span></li><li>                <span class="sh_keyword">echo</span> <span class="sh_string">"&lt;p&gt;No se encontraron personas&lt;/p&gt;"</span><span class="sh_symbol">;</span></li><li>        <span class="sh_cbracket">}</span></li><li>        <span class="sh_keyword">else</span></li><li>            <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> false<span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box"><span class="box-sp">&nbsp;</span>        <span class="sh_function">oci_free_statement</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Liberar los recursos asociados a una sentencia o cursor</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$ok</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function listarPersonas( $conexion )
+    {
+        $sql = "SELECT * FROM tbl_personas ORDER BY id";
+        $filas = 0;
+
+        $stmt = oci_parse($conexion, $sql);		// Preparar la sentencia
+        $ok   = oci_execute( $stmt );			  // Ejecutar la sentencia
+
+        if( $ok == true )
+        {
+            /* Mostrar los datos. Lo hacemos de este modo puesto que no es posible obtener el número de
+               registros sin antes haber accedido a los datos mediante las funciones 'oci_fetch_*'):
+            */
+            if( $obj = oci_fetch_object($stmt) )
+            {
+                echo "&lt;p/&gt;LISTADO DE PERSONAS&lt;br/&gt;";
+                echo "===================&lt;p /&gt;";
+
+                // Recorrer el resource y mostrar los datos (HAY QUE PONER LOS NOMBRES DE LOS CAMPOS EN MAYÚSCULAS):
+                do
+                {
+                    echo $obj-&gt;ID." - ".$obj-&gt;NOMBRE."&lt;br /&gt;";
+                } while( $obj = oci_fetch_object($stmt) );
+
+                // Mostrar el número de registros:
+                echo "&lt;p&gt;(".oci_num_rows($stmt).") fila(s) encontrado(s)&lt;/p&gt;";
+
+            }
+            else
+                echo "&lt;p&gt;No se encontraron personas&lt;/p&gt;";
+        }
+        else
+            $ok = false;
+
+        oci_free_statement($stmt);	// Liberar los recursos asociados a una sentencia o cursor
+
+        return $ok;
+    }
+?&gt;
+</pre></div></div></code>
+
+                            <p>Por último, creamos otra función que 
+procesará una consulta y nos devolverá un Objeto en PHP con los datos 
+del registro encontrado:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_7" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_7" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=7&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_buscar" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">buscarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$id</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$sql</span> <span class="sh_symbol">=</span> <span class="sh_string">"SELECT * FROM tbl_personas WHERE id="</span><span class="sh_symbol">.</span><span class="sh_variable">$id</span><span class="sh_symbol">.</span><span class="sh_string">""</span><span class="sh_symbol">;</span></li><li>        <span class="sh_variable">$objPersona</span> <span class="sh_symbol">=</span> null<span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_parse</span><span class="sh_symbol">(</span><span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Preparar la sentencia</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$ok</span>   <span class="sh_symbol">=</span> <span class="sh_function">oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Ejecutar la sentencia</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box"><span class="box-sp">&nbsp;</span>        <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> true <span class="sh_symbol">)</span></li><li>        <span class="sh_cbracket">{</span></li><li>            <span class="sh_comment">// Si se encontró el registro, se obtiene un objeto en PHP con los datos de los campos:</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>            <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_function">oci_num_rows</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">)</span> <span class="sh_symbol">&gt;</span> <span class="sh_number">0</span> <span class="sh_symbol">)</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>                <span class="sh_variable">$objPersona</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_fetch_object</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span></li><li>        <span class="sh_cbracket">}</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box"><span class="box-sp">&nbsp;</span>        <span class="sh_function">oci_free_statement</span><span class="sh_symbol">(</span><span class="sh_variable">$stmt</span><span class="sh_symbol">);</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sh_comment">// Liberar los recursos asociados a una sentencia o cursor</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$objPersona</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function buscarPersona( $conexion, $id )
+    {
+        $sql = "SELECT * FROM tbl_personas WHERE id=".$id."";
+        $objPersona = null;
+
+        $stmt = oci_parse($conexion, $sql);		// Preparar la sentencia
+        $ok   = oci_execute( $stmt );			// Ejecutar la sentencia
+
+        if( $ok == true )
+        {
+            // Si se encontró el registro, se obtiene un objeto en PHP con los datos de los campos:
+            if( oci_num_rows($stmt) &gt; 0 )
+                $objPersona = oci_fetch_object( $stmt );
+        }
+
+        oci_free_statement($stmt);	// Liberar los recursos asociados a una sentencia o cursor
+
+        return $objPersona;
+    }
+?&gt;
+</pre></div></div></code>
+
+                                <p>El código fuente principal del 
+programa. Observa que debemos introducir los datos de acceso (usuario y 
+contraseña) para poder conectar con Oracle:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap" style="display: none;"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_8" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_8" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=8&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_principal" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_comment">// Conectar (se detendrá la ejecución si se produce un error):</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$conexion</span> <span class="sh_symbol">=</span> <span class="sh_function">conectar_Oracle</span><span class="sh_symbol">(</span> <span class="sh_string">"TU_USUARIO_ORACLE"</span><span class="sh_symbol">,</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                                                    <span class="sh_string">"TU_PASSWORD"</span><span class="sh_symbol">,</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                                                    <span class="sh_string">"(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=IP_DEL_SERVIDOR)(PORT=1521)))(CONNECT_DATA=(SID=NOMBRE_DE_LA_BASE_DE_DATOS)))"</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>                                                  <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// Borrar todos los datos de la tabla:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">borrarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> null <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Error al borrar los datos.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li>    <span class="sh_keyword">else</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Datos borrados correctamente.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// insertar una persona:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">insertarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_number">1</span><span class="sh_symbol">,</span> <span class="sh_string">'Juan Rodríguez P.'</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Error al insertar los datos.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li>    <span class="sh_keyword">else</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Datos insertados correctamente.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// insertar una persona:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">insertarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_number">2</span><span class="sh_symbol">,</span> <span class="sh_string">'Juan Rodríguez P.'</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// insertar una persona:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">insertarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_number">3</span><span class="sh_symbol">,</span> <span class="sh_string">'Roberta Amador H.'</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// Modificar la persona número 2:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">modificarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_number">1</span><span class="sh_symbol">,</span> <span class="sh_string">"Alfredo Ramírez E."</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Error al modificar los datos.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li>    <span class="sh_keyword">else</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"Datos modificados correctamente.&lt;br/&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// Modificar la persona:</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_function">listarPersonas</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"&lt;p&gt;Error al listar los datos.&lt;/p&gt;"</span><span class="sh_symbol">;</span></li><li>    <span class="sh_keyword">else</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"&lt;p&gt;Datos listados correctamente.&lt;/p&gt;"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li class="box"><span class="box-sp">&nbsp;</span>    <span class="sh_variable">$objPersona</span> <span class="sh_symbol">=</span> <span class="sh_function">buscarPersona</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_number">2</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$objPersona</span> <span class="sh_symbol">==</span> null <span class="sh_symbol">)</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"No se encontró la persona"</span><span class="sh_symbol">;</span></li><li>    <span class="sh_keyword">else</span></li><li>        <span class="sh_keyword">echo</span> <span class="sh_string">"El nombre de la persona con el código: ["</span><span class="sh_symbol">.</span><span class="sh_variable">$objPersona</span><span class="sh_symbol">-&gt;</span>id<span class="sh_symbol">.</span><span class="sh_string">"] es ["</span><span class="sh_symbol">.</span><span class="sh_variable">$objPersona</span><span class="sh_symbol">-&gt;</span>nombre<span class="sh_symbol">.</span><span class="sh_string">"]"</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>    <span class="sh_comment">// Cerrar la conexión a Oracle</span></li><li class="box"><span class="box-sp">&nbsp;</span>     <span class="sh_function">oci_close</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span> <span class="sh_symbol">);</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+
+    // Conectar (se detendrá la ejecución si se produce un error):
+    $conexion = conectar_Oracle( "TU_USUARIO_ORACLE",
+                                                    "TU_PASSWORD",
+                                                    
+"(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=IP_DEL_SERVIDOR)(PORT=1521)))(CONNECT_DATA=(SID=NOMBRE_DE_LA_BASE_DE_DATOS)))"
+
+                                                  );
+
+    // Borrar todos los datos de la tabla:
+    $ok = borrarPersona( $conexion, null );
+
+    if( $ok == false )
+        echo "Error al borrar los datos.&lt;br/&gt;";
+    else
+        echo "Datos borrados correctamente.&lt;br/&gt;";
+
+    // insertar una persona:
+    $ok = insertarPersona( $conexion, 1, 'Juan Rodríguez P.' );
+
+    if( $ok == false )
+        echo "Error al insertar los datos.&lt;br/&gt;";
+    else
+        echo "Datos insertados correctamente.&lt;br/&gt;";
+
+    // insertar una persona:
+    $ok = insertarPersona( $conexion, 2, 'Juan Rodríguez P.' );
+
+    // insertar una persona:
+    $ok = insertarPersona( $conexion, 3, 'Roberta Amador H.' );
+
+    // Modificar la persona número 2:
+    $ok = modificarPersona( $conexion, 1, "Alfredo Ramírez E." );
+
+    if( $ok == false )
+        echo "Error al modificar los datos.&lt;br/&gt;";
+    else
+        echo "Datos modificados correctamente.&lt;br/&gt;";
+
+    // Modificar la persona:
+    $ok = listarPersonas( $conexion );
+
+    if( $ok == false )
+        echo "&lt;p&gt;Error al listar los datos.&lt;/p&gt;";
+    else
+        echo "&lt;p&gt;Datos listados correctamente.&lt;/p&gt;";
+
+    $objPersona = buscarPersona( $conexion, 2 );
+
+    if( $objPersona == null )
+        echo "No se encontró la persona";
+    else
+        echo "El nombre de la persona con el código: 
+[".$objPersona-&gt;id."] es [".$objPersona-&gt;nombre."]";
+
+    // Cerrar la conexión a Oracle
+     oci_close( $conexion );
+?&gt;
+</pre><div class="sh_sourceCode snippet-hide"><pre><a href="#" class="snippet-revealed snippet-toggle sh_url">Collapse Code</a></pre></div></div><div class="snippet-reveal sh_navy snippet-wrap"><pre class="sh_sourceCode"><a href="#" class="snippet-toggle sh_url">Expand Code</a></pre></div></div></code>
+
+                                <!-- DESCARGAR EJEMPLO -->
+                                <p><a href="https://informaticapc.com/tutorial-php/ejemplos/20_bbdd/04_php_oracle.zip"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/descargar_ejemplo.gif" alt="Descargar ejemplo"></a></p>
+
+                                <p class="centrado"><img data-original="./images/bases-de-datos-ejemplo.jpg" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/bases-de-datos-ejemplo.jpg" class="lazy img-responsive" alt="Redondear números" style="display: block;"></p>
+
+                                <!-- VER -->
+                                <div class="imgI fVer">
+                                    <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/info1.gif" alt="Más información" class="pull-left imgVert">
+                                    <p><span class="negrita">Vea también</span>: [ <a href="http://es.php.net/manual/es/ref.oci8.php" target="_blank" rel="external nofollow">Funciones de Oracle</a> ] - [ <a href="https://informaticapc.com/tutorial-php/configurar.php#bbdd">Configurar PHP para acceder a Bases de Datos</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-connect.php" target="_blank" rel="external nofollow">oci_connect()</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-close.php" target="_blank" rel="external nofollow">oci_close()</a> ]</p>
+                                </div>
+
+                                <!-- VER -->
+                                <div class="imgI fVer">
+                                    <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/info1.gif" alt="Más información" class="pull-left imgVert">
+                                    <p><span class="negrita">Vea también</span>: [ <a href="http://es.php.net/manual/es/function.oci-parse.php" target="_blank" rel="external nofollow">oci_parse()</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-execute.php" target="_blank" rel="external nofollow">oci_execute()</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-num-rows.php" target="_blank" rel="external nofollow">oci_num_rows()</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-fetch-object.php" target="_blank" rel="external nofollow">oci_fetch_object()</a> ] - [ <a href="http://es.php.net/manual/es/function.oci-free-statement.php" target="_blank" rel="external nofollow">oci_free_statement()</a> ]</p>
+                                </div>
+
+                    </section>
+
+                    <!-- APARTADO -->
+
+                    <section>
+
+                        <div class="row fAptdo">
+                            <div class="col-xs-12">
+                                <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/pc1.png" alt="">
+                                <a name="conectm"></a>
+                                <h2>Otra forma de conectar y realizar consultas Oracle</h2>
+                            </div>
+                        </div>
+
+                        <p>Dado que <span class="rMenu">oci_connect()</span> sólo devuelve <span class="negrita">false</span> en caso de error, puede resultar interesante la siguiente modificación que arrojará una <strong>excepción</strong> en caso de que ocurra uno:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_9" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_9" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=9&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_excepcion1" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>    <span class="sh_keyword">function</span> <span class="sh_function">conectar_Oracle</span><span class="sh_symbol">(</span> <span class="sh_variable">$usuario</span><span class="sh_symbol">,</span> <span class="sh_variable">$pass</span><span class="sh_symbol">,</span> <span class="sh_variable">$cadenaConexion</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li>        <span class="sh_variable">$conexion</span> <span class="sh_symbol">=</span> null<span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li>        try</li><li>        <span class="sh_cbracket">{</span></li><li class="box box-top"><span class="box-sp">&nbsp;</span>            <span class="sh_variable">$conexion</span> <span class="sh_symbol">=</span> <span class="sh_function">oci_connect</span><span class="sh_symbol">(</span><span class="sh_variable">$usuario</span><span class="sh_symbol">,</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                                                    <span class="sh_variable">$pass</span><span class="sh_symbol">,</span></li><li class="box box-mid"><span class="box-sp">&nbsp;</span>                                                    <span class="sh_variable">$cadenaConexion</span></li><li class="box box-bot"><span class="box-sp">&nbsp;</span>                                                   <span class="sh_symbol">)</span> <span class="sh_keyword">or</span> <span class="sh_keyword">die</span> <span class="sh_symbol">(</span> <span class="sh_string">"Error al conectar: "</span><span class="sh_symbol">.</span><span class="sh_function">oci_error</span><span class="sh_symbol">()</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>            <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li class="box"><span class="box-sp">&nbsp;</span>                throw <span class="sh_keyword">new</span> <span class="sh_function">Exception</span><span class="sh_symbol">(</span> <span class="sh_string">"Error Oracle "</span><span class="sh_symbol">.</span><span class="sh_function">oci_error</span><span class="sh_symbol">()</span> <span class="sh_symbol">);</span></li><li>        <span class="sh_cbracket">}</span></li><li>        <span class="sh_function">catch</span><span class="sh_symbol">(</span> Exception <span class="sh_variable">$e</span> <span class="sh_symbol">)</span></li><li>        <span class="sh_cbracket">{</span></li><li class="box"><span class="box-sp">&nbsp;</span>            throw <span class="sh_variable">$e</span><span class="sh_symbol">;</span></li><li>        <span class="sh_cbracket">}</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+    function conectar_Oracle( $usuario, $pass, $cadenaConexion )
+    {
+        $conexion = null;
+
+        try
+        {
+            $conexion = oci_connect($usuario,
+                                                    $pass,
+                                                    $cadenaConexion
+                                                   ) or die ( "Error al conectar: ".oci_error() );
+
+            if( $conexion == false )
+                throw new Exception( "Error Oracle ".oci_error() );
+        }
+        catch( Exception $e )
+        {
+            throw $e;
+        }
+
+        return $conexion;
+    }
+?&gt;
+</pre></div></div></code>
+
+                        <p>La siguiente función también nos resultará útil puesto que <span class="rMenu">oci_parse()</span> y <span class="rMenu">oci_execute()</span> tampoco devuelven una excepción sino sólo <span class="negrita">false</span>:</p>
+
+<code><div class="snippet-container" style="undefined;"><div class="sh_navy snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="#">copy</a><a class="snippet-text sh_url" href="#">text</a><a class="snippet-window sh_url" href="#">pop-up</a></pre><div class="snippet-clipboard" style="position: absolute; left: 1px; top: 3px; width: 42px; height: 15px; z-index: 99;"><embed id="ZeroClipboardMovie_10" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_10" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=10&amp;width=42&amp;height=15" wmode="transparent" width="42" height="15" align="middle"></div></div><pre id="php_oracle_excepcion2" class="sh_php snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_symbol">&lt;?php</span></li><li>     <span class="sh_keyword">function</span> <span class="sh_function">my_oci_query</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span> <span class="sh_symbol">)</span></li><li>    <span class="sh_cbracket">{</span></li><li class="box"><span class="box-sp">&nbsp;</span>        <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> <span class="sh_variable">@oci_parse</span><span class="sh_symbol">(</span> <span class="sh_variable">$conexion</span><span class="sh_symbol">,</span> <span class="sh_variable">$sql</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li class="box"><span class="box-sp">&nbsp;</span>            throw <span class="sh_keyword">new</span> <span class="sh_function">Exception</span><span class="sh_symbol">(</span> <span class="sh_string">"Error Oracle "</span><span class="sh_symbol">.</span><span class="sh_function">oci_error</span><span class="sh_symbol">()</span> <span class="sh_symbol">);</span></li><li>        <span class="sh_keyword">else</span></li><li>        <span class="sh_cbracket">{</span></li><li class="box"><span class="box-sp">&nbsp;</span>            <span class="sh_variable">$ok</span> <span class="sh_symbol">=</span> <span class="sh_variable">@oci_execute</span><span class="sh_symbol">(</span> <span class="sh_variable">$stmt</span> <span class="sh_symbol">);</span></li><li><span style="display:none;">&nbsp;</span></li><li>            <span class="sh_keyword">if</span><span class="sh_symbol">(</span> <span class="sh_variable">$ok</span> <span class="sh_symbol">==</span> false <span class="sh_symbol">)</span></li><li>            <span class="sh_cbracket">{</span></li><li>                <span class="sh_variable">$stmt</span> <span class="sh_symbol">=</span> null<span class="sh_symbol">;</span></li><li class="box"><span class="box-sp">&nbsp;</span>                throw <span class="sh_keyword">new</span> <span class="sh_function">Exception</span><span class="sh_symbol">(</span> <span class="sh_string">"Error Oracle "</span><span class="sh_symbol">.</span><span class="sh_function">oci_error</span><span class="sh_symbol">()</span> <span class="sh_symbol">);</span></li><li>            <span class="sh_cbracket">}</span></li><li>        <span class="sh_cbracket">}</span></li><li><span style="display:none;">&nbsp;</span></li><li>        <span class="sh_keyword">return</span> <span class="sh_variable">$stmt</span><span class="sh_symbol">;</span></li><li>    <span class="sh_cbracket">}</span></li><li><span class="sh_symbol">?&gt;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">&lt;?php
+     function my_oci_query( $conexion, $sql )
+    {
+        $stmt = @oci_parse( $conexion, $sql );
+
+        if( $stmt == false )
+            throw new Exception( "Error Oracle ".oci_error() );
+        else
+        {
+            $ok = @oci_execute( $stmt );
+
+            if( $ok == false )
+            {
+                $stmt = null;
+                throw new Exception( "Error Oracle ".oci_error() );
+            }
+        }
+
+        return $stmt;
+    }
+?&gt;
+</pre></div></div></code>
+
+                        <p><span class="negsub">NOTA</span>: La arroba 
+'@' se utiliza antes del nombre de una función para que no se muestren 
+por pantalla mensajes de aviso o error (en caso de que se produzcan).</p>
+
+                        <!-- VER -->
+                        <div class="imgI fVer">
+                            <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/info1.gif" alt="Más información" class="pull-left imgVert">
+                            <p><span class="negrita">Vea también</span>: [ <a href="http://es.php.net/throw" target="_blank" rel="external nofollow">Excepciones en PHP</a> ] - [ <a href="https://informaticapc.com/tutorial-php/excepciones-funciones-cabeceras.php">Control de Excepciones en PHP</a> ] - [ <a href="http://es.php.net/manual/es/class.exception.php" target="_blank" rel="external nofollow">Exception</a> ]</p>
+                        </div>
+
+                    </section>
+
+                </article>
+
+
+		<!-- BOTONERA -->
+
+                <div class="row botonera">
+                    <div class="col-xs-12">
+                            <a href="https://informaticapc.com/tutorial-php/index.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-primero.gif" alt="Primera página"></a>
+                            <a href="https://informaticapc.com/tutorial-php/bases-de-datos-postgresql.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-anterior.gif" alt="Anterior"></a>
+                            <a href="https://informaticapc.com/tutorial-php/configurar.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-siguiente.gif" alt="Siguiente"></a>
+                            <a href="https://informaticapc.com/tutorial-php/configurar.php"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/boton-ultimo.gif" alt="Última página"></a>
+                    </div>
+                </div>
+
+
+                <!-- ADS -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="adCurso">
+
+    <script async="" src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/adsbygoogle.js"></script>
+    <!-- Curso_Adaptable_Inf -->
+    <ins class="adsbygoogle adslot_curso" style="display: block; height: 280px;" data-ad-client="ca-pub-7727315925763685" data-ad-slot="6846521647" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:350px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:350px;background-color:transparent;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:350px;height:280px;" width="350" height="280" frameborder="0"></iframe></ins></ins></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</div>                    </div>
+                </div>
+
+            </div>  <!-- CIERRE COLUMNA DERECHA -->
+
+
+        </div> <!-- CIERRE DIV CONTENIDO -->
+
+
+        <!-- PIE (footer) -->
+
+        <footer>
+            <div class="row equal" id="fila-pie">
+                
+					<div class="col-xs-12 col-sm-2">
+						<div id="pie-imgs">
+	                        <img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/licencia.png" id="imgLicencia1" alt="Licencia">
+	                        <a href="https://informaticapc.com/cookies-y-privacidad.php" rel="nofollow" target="_blank"><img src="Tutorial%20PHP%20:%20PHP%20y%20Oracle_files/lssi.jpg" alt="LSSI" id="imgLicencia2" class="sinBorde"></a>
+                        </div>
+					</div>
+
+					<div class="col-xs-12 col-sm-10" id="pie-desc">
+                        <div>La mayor parte de los contenidos de esta 
+web se encuentran registrados en la Propiedad Intelectual y bajo 
+licencia Creative Commons: puede distribuirlos, copiarlos y exhibirlos <span class="negsub">haciendo clara referencia a esta web</span>. No puede modificarlos ni obtener beneficio económico directo o indirecto sin nuestro consentimiento.</div>
+					</div>
+            </div>
+        </footer>
+
+
+        </div> <!-- CIERRE CONTENEDOR PRINCIPAL -->
+
+        <div class="row" id="filaCierreBody"><div id="dCookies" class="col-xs-12" style="top: 549px; display: block;">
+    <span>Usamos cookies para ofrecerte una experiencia mejorada, el continuar navegando supone que aceptas su uso</span>
+    <p>
+    	<input id="cerrarCookies" value="Cerrar" class="btn btn-primary" type="button">
+    	<input id="mostrarCookies" value="Más información" class="btn btn-primary" type="button">
+	</p>
+</div></div>
+
+    
+
+
+
+</body></html>
