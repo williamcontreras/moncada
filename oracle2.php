@@ -2,7 +2,7 @@
 
 $c = oci_pconnect('mama', '20152029', 'localhost/xe');
 
-$s = oci_parse($c, 'select * from UNO where rownum <= 5
+$s = oci_parse($c, 'select * from UNO where rownum <= 7
 order by ID DESC');
 
 
